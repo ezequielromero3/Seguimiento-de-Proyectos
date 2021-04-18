@@ -1,0 +1,30 @@
+insert into Participantes (Legajo, ApellidoYNombre)
+Values (10, 'Gómez Juan'),
+(20, 'Pérez Lucas'),
+(30, 'Treviso Pablo'),
+(40, 'Jordan Michael');
+
+insert into Rol (Rol, ValorHora)
+Values ('Project Manager', 2),
+('Desarrollador', 1.6),
+('Tester', 1.4),
+('Administrador', 1.5),
+('DevOps', 1.2);
+
+insert into Cliente (Nombre)
+Values ('Microsoft'),
+('Oracle');
+
+insert into Proyectos (NombreProyecto, NumeroProyecto, idCliente, LegajoParticipante)
+Values ('Arreglar Office', 1, 1, 10),
+('Testear Office', 2, 1, 20),
+('Testear Office', 2, 1, 30),
+('Testear Office', 2, 1, 10),
+('Arreglar SQL', 3, 2, 40); 
+
+insert into Participaciones (Legajo, idRol, NumeroProyecto)
+Values (10, 2, 1),
+(20, 3, 2),
+(30, 4, 2),
+(10, 5, 2),
+(40, 4, 3);

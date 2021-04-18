@@ -1,0 +1,43 @@
+create database Seguimiento_de_Proyectos;
+use Seguimiento_de_Proyectos;
+
+create table Participantes
+(Legajo int unsigned not null primary key,
+ApellidoYNombre varchar(100) not null);
+
+create table Rol
+(idRol int auto_increment primary key,
+Rol varchar(50) not null,
+ValorHora double not null);
+
+create table Cliente
+(idCliente int auto_increment primary key,
+Nombre varchar(50) not null,
+CentroCostos int default null,
+CentroFacturacion int default null);
+
+create table Proyectos
+(id int auto_increment primary key,
+NombreProyecto varchar(120) not null,
+NumeroProyecto int not null,
+idCliente int,
+LegajoParticipante int unsigned, 
+FOREIGN KEY (idCliente) references Cliente (idCliente),
+FOREIGN KEY (LegajoParticipante) references Participantes (Legajo));
+
+create table Participaciones 
+(id int auto_increment primary key,
+Legajo int unsigned,
+idRol int,
+NumeroProyecto int,
+AginacionDeHoras int default null,
+FOREIGN KEY (Legajo) references Participantes (Legajo),
+FOREIGN KEY (idRol) references Rol (idRol)); 
+
+create table Liquidacion
+(linea int auto_increment primary key,
+idCliente int,
+NumeroProyecto int,
+FechaLiquidacion DATETIME,
+HorasTotales int not null,
+Facturado double not null);
