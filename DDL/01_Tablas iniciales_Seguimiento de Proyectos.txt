@@ -30,7 +30,7 @@ create table Participaciones
 Legajo int unsigned,
 idRol int,
 NumeroProyecto int,
-AginacionDeHoras int default null,
+AsignacionDeHoras int default null,
 FOREIGN KEY (Legajo) references Participantes (Legajo),
 FOREIGN KEY (idRol) references Rol (idRol)); 
 
