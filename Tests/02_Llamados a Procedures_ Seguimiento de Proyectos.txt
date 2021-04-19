@@ -1,0 +1,9 @@
+call RendicionDeHoras(2, 30, 5);
+call RendicionDeHoras(1, 10, 5);
+call RendicionDeHoras(2, 10, 5);
+call RendicionDeHoras(2, 20, 5);
+call RendicionDeHoras(3, 40, 5);
+
+CALL LiquidacionMensual(1);
+CALL LiquidacionMensual(2);
+CALL LiquidacionMensual(3);
