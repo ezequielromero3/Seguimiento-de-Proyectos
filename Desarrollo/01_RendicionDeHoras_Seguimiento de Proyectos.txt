@@ -1,0 +1,14 @@
+delimiter $$
+create PROCEDURE RendicionDeHoras(
+    IN NumeroProyecto INT,
+    IN Legajo INT,
+    IN Horas INT
+)
+
+BEGIN
+    UPDATE participaciones 
+    SET participaciones.AsignacionDeHoras = participaciones.AsignacionDeHoras + horas
+    WHERE participaciones.NumeroProyecto = NumeroProyecto AND participaciones.Legajo = Legajo;
+
+end;
+$$
