@@ -30,7 +30,7 @@ create table Participaciones
 Legajo int unsigned,
 idRol int,
 NumeroProyecto int,
-AsignacionDeHoras int default 0,
+AsignacionDeHoras double default 0,
 FOREIGN KEY (Legajo) references Participantes (Legajo),
 FOREIGN KEY (idRol) references Rol (idRol)); 
 
@@ -39,5 +39,5 @@ create table Liquidacion
 idCliente int,
 NumeroProyecto int,
 FechaLiquidacion DATETIME,
-HorasTotales int not null,
+HorasTotales double not null,
 Facturado double not null);
