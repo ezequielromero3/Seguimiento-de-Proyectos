@@ -41,3 +41,11 @@ NumeroProyecto int,
 FechaLiquidacion DATETIME,
 HorasTotales double not null,
 Facturado double not null);
+
+create table HorasCargadas
+(linea int auto_increment primary key,
+NumeroProyecto int,
+Legajo int,
+idRol int,
+HorasRealizadas double,
+FechaCarga DATETIME);
