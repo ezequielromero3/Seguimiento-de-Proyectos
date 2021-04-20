@@ -18,3 +18,25 @@ BEGIN
 
 END
 $$
+
+delimiter $$
+Create PROCEDURE LiquidacionMensual(
+    IN NumeroProyecto INT
+)
+
+BEGIN
+
+    INSERT INTO liquidacion(idCliente, NumeroProyecto, FechaLiquidacion, HorasTotales, Facturado)
+   select proyectos.idCliente, participaciones.NumeroProyecto,NOW() , SUM(participaciones.AsignacionDeHoras) , SUM(participaciones.AsignacionDeHoras * rol.ValorHora)
+
+    FROM participaciones
+    INNER JOIN proyectos ON proyectos.NumeroProyecto = participaciones.NumeroProyecto
+    INNER JOIN rol ON rol.idRol = participaciones.idRol
+    WHERE participaciones.NumeroProyecto = NumeroProyecto
+		GROUP BY participaciones.idRol; 
+		
+     UPDATE participaciones set participaciones.AsignacionDeHoras = 0 
+     WHERE participaciones.NumeroProyecto = NumeroProyecto;
+
+END
+$$
