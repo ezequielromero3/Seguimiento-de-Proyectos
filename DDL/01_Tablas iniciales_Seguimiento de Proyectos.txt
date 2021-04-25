@@ -1,5 +1,5 @@
-create database Seguimiento_de_Proyectos;
-use Seguimiento_de_Proyectos;
+create database SeguimientoDeProyectos;
+use SeguimientoDeProyectos;
 
 create table Participantes
 (Legajo int unsigned not null primary key,
@@ -34,18 +34,20 @@ AsignacionDeHoras double default 0,
 FOREIGN KEY (Legajo) references Participantes (Legajo),
 FOREIGN KEY (idRol) references Rol (idRol)); 
 
-create table Liquidacion
-(linea int auto_increment primary key,
-idCliente int,
-NumeroProyecto int,
-FechaLiquidacion DATETIME,
-HorasTotales double not null,
-Facturado double not null);
-
-create table HorasCargadas
-(linea int auto_increment primary key,
-NumeroProyecto int,
+create table horasCargadas
+(linea int not null auto_increment primary key,
+NumeroProyecto int not null,
 Legajo int,
 idRol int,
 HorasRealizadas double,
-FechaCarga DATETIME);
+FechaCarga DATETIME,
+DesdeDia Date,
+HastaDia Date); 
+
+create table Liquidacion
+(linea int auto_increment primary key,
+NumeroProyecto int,
+FechaLiquidacion DATETIME,
+HorasTotales double not null,
+Facturado double not null,
+idCliente int);

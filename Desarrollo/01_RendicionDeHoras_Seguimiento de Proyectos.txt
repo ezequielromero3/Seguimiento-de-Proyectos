@@ -1,35 +1,74 @@
 delimiter $$
-create PROCEDURE RendicionDeHoras(
+create PROCEDURE RendicionDeHorasDia(
     IN NumeroProyecto INT,
     IN Legajo INT,
-    IN Horas INT
+    IN Horas INT,
+    IN HastaDia DATE
 )
 
 BEGIN
     UPDATE participaciones 
     SET participaciones.AsignacionDeHoras = participaciones.AsignacionDeHoras + horas
     WHERE participaciones.NumeroProyecto = NumeroProyecto AND participaciones.Legajo = Legajo;
+
+    INSERT INTO horasCargadas (NumeroProyecto, Legajo, idRol, HorasRealizadas, FechaCarga, HastaDia)
+    SELECT NumeroProyecto, Legajo, participaciones.idRol, horas, NOW(), HastaDia
+    FROM participaciones
+    WHERE participaciones.NumeroProyecto = NumeroProyecto AND participaciones.Legajo = Legajo ;
+   
+    UPDATE horascargadas
+	 SET horascargadas.DesdeDia = HastaDia
+	 WHERE horascargadas.NumeroProyecto = NumeroProyecto;    
 
 end;
 $$
 
-
 delimiter $$
-create PROCEDURE RendicionDeHoras_2(
+create PROCEDURE RendicionDeHorasSemanal(
     IN NumeroProyecto INT,
     IN Legajo INT,
-    IN Horas INT
+    IN Horas INT,
+    IN HastaDia DATE
 )
 
 BEGIN
     UPDATE participaciones 
     SET participaciones.AsignacionDeHoras = participaciones.AsignacionDeHoras + horas
     WHERE participaciones.NumeroProyecto = NumeroProyecto AND participaciones.Legajo = Legajo;
-    
-    INSERT INTO HorasCargadas (NumeroProyecto, Legajo, idRol, HorasRealizadas, FechaCarga)
-    SELECT NumeroProyecto, Legajo, participaciones.idRol, horas, NOW()
+
+    INSERT INTO horasCargadas (NumeroProyecto, Legajo, idRol, HorasRealizadas, FechaCarga, HastaDia)
+    SELECT NumeroProyecto, Legajo, participaciones.idRol, horas, NOW(), HastaDia
     FROM participaciones
-	 WHERE participaciones.NumeroProyecto = NumeroProyecto AND participaciones.Legajo = Legajo;
+	 WHERE participaciones.NumeroProyecto = NumeroProyecto AND participaciones.Legajo = Legajo ;
+
+    UPDATE horascargadas
+	 SET horascargadas.DesdeDia = DATE_SUB(HastaDia, INTERVAL 7 DAY)
+	 WHERE horascargadas.NumeroProyecto = NumeroProyecto;
+
+end;
+$$
+
+delimiter $$
+create PROCEDURE RendicionDeHorasMensual(
+    IN NumeroProyecto INT,
+    IN Legajo INT,
+    IN Horas INT,
+    IN HastaDia DATE
+)
+
+BEGIN
+    UPDATE participaciones 
+    SET participaciones.AsignacionDeHoras = participaciones.AsignacionDeHoras + horas
+    WHERE participaciones.NumeroProyecto = NumeroProyecto AND participaciones.Legajo = Legajo;
+
+    INSERT INTO HorasCargadas (NumeroProyecto, Legajo, idRol, HorasRealizadas, FechaCarga, HastaDia)
+    SELECT NumeroProyecto, Legajo, participaciones.idRol, horas, NOW(), HastaDia
+    FROM participaciones
+	 WHERE participaciones.NumeroProyecto = NumeroProyecto AND participaciones.Legajo = Legajo ;
+
+     UPDATE horascargadas
+	 SET horascargadas.DesdeDia = DATE_SUB(HastaDia, INTERVAL 1 MONTH)
+	 WHERE horascargadas.NumeroProyecto = NumeroProyecto;
 
 end;
 $$
