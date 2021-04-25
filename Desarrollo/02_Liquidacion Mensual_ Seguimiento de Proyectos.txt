@@ -1,40 +1,18 @@
 delimiter $$
 Create PROCEDURE LiquidacionMensual(
-    IN NumeroProyecto INT
+    IN NumeroProyecto INT, 
+    IN p_idCliente INT	
 )
 
 BEGIN
 
-    INSERT INTO liquidacion(idCliente, NumeroProyecto, FechaLiquidacion, HorasTotales, Facturado)
-   select proyectos.idCliente, participaciones.NumeroProyecto,NOW() , SUM(participaciones.AsignacionDeHoras) , SUM(participaciones.AsignacionDeHoras * rol.ValorHora)
+    INSERT INTO liquidacion( NumeroProyecto, FechaLiquidacion, HorasTotales, Facturado, idCliente)
+   select NumeroProyecto, NOW() , SUM(HorasRealizadas) , SUM(HorasRealizadas * rol.ValorHora), p_idCliente
+    FROM horasCargadas
+    INNER JOIN rol ON rol.idRol = horasCargadas.idRol
+    WHERE fechaCarga >= date_sub(current_date, INTERVAL 1 MONTH) AND horasCargadas.NumeroProyecto = NumeroProyecto
+    GROUP BY horasCargadas.NumeroProyecto; 
 
-    FROM participaciones
-    INNER JOIN proyectos ON proyectos.NumeroProyecto = participaciones.NumeroProyecto
-    INNER JOIN rol ON rol.idRol = participaciones.idRol
-    WHERE participaciones.NumeroProyecto = NumeroProyecto; 
-
-     UPDATE participaciones set participaciones.AsignacionDeHoras = 0 
-     WHERE participaciones.NumeroProyecto = NumeroProyecto;
-
-END
-$$
-
-delimiter $$
-Create PROCEDURE LiquidacionMensual(
-    IN NumeroProyecto INT
-)
-
-BEGIN
-
-    INSERT INTO liquidacion(idCliente, NumeroProyecto, FechaLiquidacion, HorasTotales, Facturado)
-   select proyectos.idCliente, participaciones.NumeroProyecto,NOW() , SUM(participaciones.AsignacionDeHoras) , SUM(participaciones.AsignacionDeHoras * rol.ValorHora)
-
-    FROM participaciones
-    INNER JOIN proyectos ON proyectos.NumeroProyecto = participaciones.NumeroProyecto
-    INNER JOIN rol ON rol.idRol = participaciones.idRol
-    WHERE participaciones.NumeroProyecto = NumeroProyecto
-		GROUP BY participaciones.idRol; 
-		
      UPDATE participaciones set participaciones.AsignacionDeHoras = 0 
      WHERE participaciones.NumeroProyecto = NumeroProyecto;
 
