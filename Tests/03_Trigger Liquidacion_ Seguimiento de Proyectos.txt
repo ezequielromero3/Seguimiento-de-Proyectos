@@ -1,0 +1,10 @@
+delimiter $$
+CREATE TRIGGER LimiteHorasMensual
+BEFORE UPDATE ON participaciones
+FOR EACH ROW
+if (NEW.AsignacionDeHoras >200) then
+SIGNAL SQLSTATE '02000' SET MESSAGE_TEXT = 'Limite de horas superado. Realice una liquidacion o contacte al administrado.';
+SET new.AsignacionDeHoras = 200;
+END if;
+
+END $$
